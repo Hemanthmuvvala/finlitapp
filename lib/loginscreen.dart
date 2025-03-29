@@ -52,7 +52,7 @@ class _LoginscreenState extends State<Loginscreen> {
                     CircleAvatar(
                       radius: 60,
                       backgroundImage:FileImage(File(pickedXfile!.path)),
-                    ): CircleAvatar(
+                    ): const CircleAvatar(
                       radius: 60,
                     ),
                     Positioned(
@@ -82,11 +82,11 @@ class _LoginscreenState extends State<Loginscreen> {
                       maxLength: 24,
                       decoration: InputDecoration(
                         hintText: "Enter Name",
-                        label: Text('Name'),
+                        label:const  Text('Name'),
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
-                        prefixIcon: Icon(Icons.person),
+                        prefixIcon:const Icon(Icons.person),
                         counterText: "",
                       ),
                     ),
