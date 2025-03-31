@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:finlitapp/homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
@@ -67,7 +68,8 @@ class _LoginscreenState extends State<Loginscreen> {
                           right: 20,
                           child: InkWell(
                               onTap: () async {
-                                ImagePicker imagepicker = ImagePicker();
+                                ImagePicker imagepicker =
+                                    ImagePicker(); //user can pic the image from the gallery.
                                 pickedXfile = await imagepicker.pickImage(
                                   source: ImageSource.gallery,
                                   // preferredCameraDevice:CameraDevice.front
@@ -82,6 +84,7 @@ class _LoginscreenState extends State<Loginscreen> {
                               )))
                     ]),
                     textFieldDefault,
+                    //name validation for the loginform
                     Padding(
                       padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                       child: TextFormField(
@@ -91,6 +94,10 @@ class _LoginscreenState extends State<Loginscreen> {
                             return 'please enter name';
                           }
                           return null;
+                        },
+                        textInputAction: TextInputAction.next,
+                        onEditingComplete: () {
+                          FocusScope.of(context).nextFocus();
                         },
                         decoration: InputDecoration(
                           hintText: "Enter Name",
@@ -105,6 +112,7 @@ class _LoginscreenState extends State<Loginscreen> {
                       ),
                     ),
                     textFieldDefault,
+                    //phone number validation
                     Padding(
                       padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                       child: TextFormField(
@@ -117,6 +125,11 @@ class _LoginscreenState extends State<Loginscreen> {
                             return 'please enter a valid number';
                           }
                           return null;
+                        },
+                        textInputAction: TextInputAction.next,//shows the next arrow in the keyboard
+                        //The focus changes to the nextline.
+                        onEditingComplete: () {
+                          FocusScope.of(context).nextFocus();
                         },
                         decoration: InputDecoration(
                           hintText: "Phone",
@@ -131,12 +144,14 @@ class _LoginscreenState extends State<Loginscreen> {
                       ),
                     ),
                     textFieldDefault,
+                    //pasword validation for the loginscreen
                     Padding(
                       padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                       child: TextFormField(
                         maxLength: 8,
                         obscureText: !passwordVisibility,
                         validator: (value) {
+                          //regx expression that allows only upto 8 charectors and atleast one special charecter.
                           final bool validPassword = RegExp(
                                   r'^(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$')
                               .hasMatch(value ?? '');
@@ -147,6 +162,11 @@ class _LoginscreenState extends State<Loginscreen> {
                             return 'password contains 8 charecters and  atleast one \nspecial charecter';
                           }
                           return null;
+                        },
+                        //done symbol is shown in the keyboard
+                        textInputAction: TextInputAction.done,
+                        onEditingComplete: () {
+                          FocusScope.of(context).unfocus();
                         },
                         decoration: InputDecoration(
                           hintText: "Password",
@@ -174,14 +194,23 @@ class _LoginscreenState extends State<Loginscreen> {
                       ),
                     ),
                     textFieldDefault,
+
                     ElevatedButton(
                       onPressed: () {
+                        //used to unfocus the keyboard after pressing the login.
+                        FocusScope.of(context).unfocus();
                         if (_fromValidator.currentState!.validate()) {
                           ScaffoldMessenger.of(context).showSnackBar(
-                            
-                              const SnackBar(backgroundColor:Color.fromARGB(255, 167, 168, 165),
+                              const SnackBar(
+                                  backgroundColor:
+                                      Color.fromARGB(255, 167, 168, 165),
                                   content: Text('Login successful')));
                         }
+                        Navigator.pushReplacement(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Homescreen()),
+                        );
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.black,
@@ -200,7 +229,7 @@ class _LoginscreenState extends State<Loginscreen> {
                     TextButton(
                       onPressed: () {},
                       child: const Text(
-                        'Already have an account?',
+                        'Create an account?',
                         style: TextStyle(color: Colors.blue),
                       ),
                     ),

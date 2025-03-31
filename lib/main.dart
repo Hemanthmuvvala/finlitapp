@@ -1,6 +1,5 @@
-//import 'package:finlitapp/chatscreen.dart';
-//import 'package:finlitapp/homescreen.dart';
 import 'package:finlitapp/loginscreen.dart';
+import 'package:finlitapp/splashscreen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -17,7 +16,7 @@ class ChatApp extends StatelessWidget {
       theme: ThemeData.light(useMaterial3: true,),
       
       
-      home: const Loginscreen(),
+      home: const Splashscreen(),
     );
   }
 }
