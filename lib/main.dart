@@ -1,4 +1,3 @@
-import 'package:finlitapp/loginscreen.dart';
 import 'package:finlitapp/splashscreen.dart';
 import 'package:flutter/material.dart';
 
