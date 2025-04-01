@@ -1,18 +1,22 @@
 import 'package:finlitapp/chatscreen.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class Homescreen extends StatefulWidget {
-  const Homescreen({super.key});
-  
+  final String name;
+
+  const Homescreen({super.key, required this.name});
+
   @override
   State<Homescreen> createState() => _HomescreenState();
 }
 
-class _HomescreenState extends State<Homescreen> with SingleTickerProviderStateMixin {
+class _HomescreenState extends State<Homescreen>
+    with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<int> _animation;
-  final String _text = 'Your AI-powered Financial Guide';
-  
+  final String _text = 'Your AI-powered Financial Assistant';
+
   @override
   void initState() {
     super.initState();
@@ -20,13 +24,12 @@ class _HomescreenState extends State<Homescreen> with SingleTickerProviderStateM
       duration: Duration(milliseconds: _text.length * 100),
       vsync: this,
     );
-    
+
     _animation = IntTween(begin: 0, end: _text.length).animate(_controller);
-    
-    
+
     _controller.forward();
   }
-  
+
   @override
   void dispose() {
     _controller.dispose();
@@ -36,16 +39,27 @@ class _HomescreenState extends State<Homescreen> with SingleTickerProviderStateM
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor:Colors.white,
-      appBar:AppBar(
-        title:const Center(child: Text('FinLit AI',style:TextStyle(fontSize:30,fontWeight:FontWeight.bold),)),
-        backgroundColor:Colors.white,
+      backgroundColor: Colors.white,
+      appBar: AppBar(
+        title: const Center(
+            child: Text(
+          'FinLit AI',
+          style: TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
+        )),
+        backgroundColor: Colors.white,
       ),
       body: Column(
-        
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          
+          Text(
+            'Welcome, ${widget.name}!',
+            style: GoogleFonts.italiana(
+                textStyle:
+                    TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+          ),
+          SizedBox(
+            height: 10,
+          ),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 20),
             child: AnimatedBuilder(
@@ -53,12 +67,15 @@ class _HomescreenState extends State<Homescreen> with SingleTickerProviderStateM
               builder: (context, child) {
                 return Text(
                   _text.substring(0, _animation.value),
-                  style: const TextStyle(fontSize: 45, fontWeight: FontWeight.bold),
+                  style: const TextStyle(
+                      fontSize: 45, fontWeight: FontWeight.bold),
                 );
               },
             ),
           ),
-          const SizedBox(height:30,),
+          const SizedBox(
+            height: 30,
+          ),
           Padding(
             padding: const EdgeInsets.all(30),
             child: Center(
@@ -72,7 +89,7 @@ class _HomescreenState extends State<Homescreen> with SingleTickerProviderStateM
                 label: const Text(
                   'Chat',
                   style: TextStyle(
-                    color: Colors.white, 
+                    color: Colors.white,
                     fontWeight: FontWeight.bold,
                   ),
                 ),

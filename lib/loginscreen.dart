@@ -16,7 +16,8 @@ class _LoginscreenState extends State<Loginscreen> {
   bool passwordVisibility = false;
   XFile? pickedXfile;
   final _fromValidator = GlobalKey<FormState>();
-  // bool validCheck = false;
+  String userName = " ";
+  
 
   @override
   Widget build(BuildContext context) {
@@ -99,6 +100,9 @@ class _LoginscreenState extends State<Loginscreen> {
                         onEditingComplete: () {
                           FocusScope.of(context).nextFocus();
                         },
+                         onChanged: (value) {
+                          userName =value;
+                        },
                         decoration: InputDecoration(
                           hintText: "Enter Name",
                           label: const Text('Name'),
@@ -126,7 +130,8 @@ class _LoginscreenState extends State<Loginscreen> {
                           }
                           return null;
                         },
-                        textInputAction: TextInputAction.next,//shows the next arrow in the keyboard
+                        textInputAction: TextInputAction
+                            .next, //shows the next arrow in the keyboard
                         //The focus changes to the nextline.
                         onEditingComplete: () {
                           FocusScope.of(context).nextFocus();
@@ -168,6 +173,7 @@ class _LoginscreenState extends State<Loginscreen> {
                         onEditingComplete: () {
                           FocusScope.of(context).unfocus();
                         },
+                       
                         decoration: InputDecoration(
                           hintText: "Password",
                           label: const Text('Password'),
@@ -209,7 +215,7 @@ class _LoginscreenState extends State<Loginscreen> {
                         Navigator.pushReplacement(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => const Homescreen()),
+                              builder: (context) => Homescreen(name:userName)),
                         );
                       },
                       style: ElevatedButton.styleFrom(
