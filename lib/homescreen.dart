@@ -15,7 +15,7 @@ class _HomescreenState extends State<Homescreen>
     with SingleTickerProviderStateMixin {
   late AnimationController _controller;
   late Animation<int> _animation;
-  final String _text = 'Your AI-powered Financial Assistant';
+  final String _text = 'Finlit Your AI powered Financial Assistant';
 
   @override
   void initState() {
@@ -68,13 +68,13 @@ class _HomescreenState extends State<Homescreen>
                 return Text(
                   _text.substring(0, _animation.value),
                   style: const TextStyle(
-                      fontSize: 45, fontWeight: FontWeight.bold),
+                      fontSize: 30, fontWeight: FontWeight.bold),
                 );
               },
             ),
           ),
           const SizedBox(
-            height: 30,
+            height: 35,
           ),
           Padding(
             padding: const EdgeInsets.all(30),

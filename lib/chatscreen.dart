@@ -315,6 +315,7 @@ class _ChatScreenState extends State<ChatScreen> {
     return Scaffold(
       backgroundColor:Colors.white,
       appBar: AppBar(
+        backgroundColor:const Color.fromARGB(255, 209, 205, 205),
         title: const Text("FinLit AI"),
         actions: [
           PopupMenuButton<String>(
@@ -394,7 +395,7 @@ class _ChatScreenState extends State<ChatScreen> {
                     ),
                   ),
                   SizedBox(width: 8),
-                  Text("AI is typing..."),
+                  Text("Chankaya AI is typing..."),
                 ],
               ),
             ),

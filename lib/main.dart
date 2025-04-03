@@ -1,4 +1,4 @@
-import 'package:finlitapp/splashscreen.dart';
+import 'package:finlitapp/loginscreen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,10 +13,11 @@ class ChatApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.light(useMaterial3: true,),
-      
-      
-      home: const Splashscreen(),
+      // initialRoute: '/',
+      // onGenerateRoute: ,
+      home:const   Loginscreen(),
     );
+    
   }
 }
 
