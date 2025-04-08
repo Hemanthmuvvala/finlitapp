@@ -1,4 +1,4 @@
-import 'package:finlitapp/loginscreen.dart';
+import 'package:finlitapp/menuscreen.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -13,9 +13,8 @@ class ChatApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData.light(useMaterial3: true,),
-      // initialRoute: '/',
-      // onGenerateRoute: ,
-      home:const   Loginscreen(),
+     
+      home: const PopupScreen(),
     );
     
   }
