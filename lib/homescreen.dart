@@ -4,7 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 
 class Homescreen extends StatefulWidget {
   final String name;
-
+  static const String routeName='/homescreen';
   const Homescreen({super.key, required this.name});
 
   @override
@@ -55,9 +55,9 @@ class _HomescreenState extends State<Homescreen>
             'Welcome, ${widget.name}!',
             style: GoogleFonts.italiana(
                 textStyle:
-                    TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
+                    const TextStyle(fontSize: 20, fontWeight: FontWeight.bold)),
           ),
-          SizedBox(
+          const SizedBox(
             height: 10,
           ),
           Padding(

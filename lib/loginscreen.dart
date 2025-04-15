@@ -1,11 +1,13 @@
 import 'dart:io';
-
-import 'package:finlitapp/homescreen.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 
 class Loginscreen extends StatefulWidget {
+   static const String routeName='/Loginscreen';
+
+  
+
   const Loginscreen({super.key});
 
   @override
@@ -18,8 +20,7 @@ class _LoginscreenState extends State<Loginscreen> {
   XFile? pickedXfile;
   final _fromValidator = GlobalKey<FormState>();
   String userName = " ";
-  
-
+ 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -32,16 +33,25 @@ class _LoginscreenState extends State<Loginscreen> {
       //   centerTitle: true,
       //   backgroundColor: Colors.black,
       // ),
-    
+
       body: SingleChildScrollView(
         child: Form(
           key: _fromValidator,
-
           child: Column(
             children: [
-             const   SizedBox(height:40,),
-              Text('welcome..',style:GoogleFonts.italiana(textStyle:const TextStyle(fontSize:20,fontWeight:FontWeight.bold),),),
-           const   SizedBox(height:5,),
+              const SizedBox(
+                height: 40,
+              ),
+              Text(
+                'welcome..',
+                style: GoogleFonts.italiana(
+                  textStyle: const TextStyle(
+                      fontSize: 20, fontWeight: FontWeight.bold),
+                ),
+              ),
+              const SizedBox(
+                height: 5,
+              ),
               SizedBox(
                 height: 590,
                 width: 550,
@@ -54,10 +64,9 @@ class _LoginscreenState extends State<Loginscreen> {
                       borderRadius: BorderRadius.circular(20),
                     ),
                     child: Column(
-                   
                       children: [
                         textFieldDefault,
-                       
+
                         Stack(children: [
                           pickedXfile != null
                               ? CircleAvatar(
@@ -69,9 +78,8 @@ class _LoginscreenState extends State<Loginscreen> {
                                   radius: 60,
                                 ),
                           Positioned(
-                              bottom:0
-                              ,
-                              top:90,
+                              bottom: 0,
+                              top: 90,
                               right: 14,
                               child: InkWell(
                                   onTap: () async {
@@ -106,8 +114,8 @@ class _LoginscreenState extends State<Loginscreen> {
                             onEditingComplete: () {
                               FocusScope.of(context).nextFocus();
                             },
-                             onChanged: (value) {
-                              userName =value;
+                            onChanged: (value) {
+                              userName = value;
                             },
                             decoration: InputDecoration(
                               hintText: "Enter Name",
@@ -127,7 +135,8 @@ class _LoginscreenState extends State<Loginscreen> {
                           padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                           child: TextFormField(
                             maxLength: 10,
-                            keyboardType: const TextInputType.numberWithOptions(),
+                            keyboardType:
+                                const TextInputType.numberWithOptions(),
                             validator: (value) {
                               if (value == null || value.isEmpty) {
                                 return 'please enter number';
@@ -166,7 +175,7 @@ class _LoginscreenState extends State<Loginscreen> {
                               final bool validPassword = RegExp(
                                       r'^(?=.*[!@#$%^&*(),.?":{}|<>])[A-Za-z\d!@#$%^&*(),.?":{}|<>]{8,}$')
                                   .hasMatch(value ?? '');
-              
+
                               if (value == null || value.isEmpty) {
                                 return 'please enter password';
                               } else if (!validPassword) {
@@ -179,7 +188,7 @@ class _LoginscreenState extends State<Loginscreen> {
                             onEditingComplete: () {
                               FocusScope.of(context).unfocus();
                             },
-                           
+
                             decoration: InputDecoration(
                               hintText: "Password",
                               label: const Text('Password'),
@@ -206,7 +215,7 @@ class _LoginscreenState extends State<Loginscreen> {
                           ),
                         ),
                         textFieldDefault,
-              
+
                         ElevatedButton(
                           onPressed: () {
                             //used to unfocus the keyboard after pressing the login.
@@ -217,14 +226,15 @@ class _LoginscreenState extends State<Loginscreen> {
                                       backgroundColor:
                                           Color.fromARGB(255, 167, 168, 165),
                                       content: Text('Login successful')));
-                                      //navigate to the homescreen.
-                                       Navigator.pushReplacement(
-                              context,
-                              MaterialPageRoute(
-                                  builder: (context) => Homescreen(name:userName)),
-                            );
+                              //           //navigate to the homescreen.
+                              //            Navigator.pushReplacement(
+                              //   context,
+                              //   MaterialPageRoute(
+                              //       builder: (context) => Homescreen(name:userName)),
+                              // );
+                              Navigator.of(context).pushNamedAndRemoveUntil(
+                                  '/homeScreen', (route) => false,arguments:userName);
                             }
-                           
                           },
                           style: ElevatedButton.styleFrom(
                             backgroundColor: Colors.black,

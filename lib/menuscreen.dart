@@ -14,6 +14,8 @@ class _PopupScreenState extends State<PopupScreen> with TickerProviderStateMixin
 
   final List<AnimationController> _controllers = [];
   final List<AnimationController> _colorControllers = [];
+  final List<AnimationController> _scaleControllers = [];
+  final List<Animation<double>> _scaleAnimations = [];
   final TextEditingController _nameController = TextEditingController();
 
   @override
@@ -22,7 +24,7 @@ class _PopupScreenState extends State<PopupScreen> with TickerProviderStateMixin
 
     for (int i = 0; i < 9; i++) {
       _controllers.add(AnimationController(
-        duration: const Duration(milliseconds: 200), // Reduced duration
+        duration: const Duration(milliseconds: 200),
         vsync: this,
       ));
 
@@ -30,6 +32,32 @@ class _PopupScreenState extends State<PopupScreen> with TickerProviderStateMixin
         duration: const Duration(milliseconds: 300),
         vsync: this,
       ));
+
+      final scaleController = AnimationController(
+        duration: const Duration(milliseconds: 600),
+        vsync: this,
+      );
+
+      _scaleControllers.add(scaleController);
+
+      _scaleAnimations.add(
+        TweenSequence<double>([
+          TweenSequenceItem(tween: Tween(begin: 1.0, end: 1.375), weight: 20),
+          TweenSequenceItem(tween: Tween(begin: 1.375, end: 1.125), weight: 20),
+          TweenSequenceItem(tween: Tween(begin: 1.125, end: 1.3125), weight: 20),
+          TweenSequenceItem(tween: Tween(begin: 1.3125, end: 1.25), weight: 40),
+        ]).animate(CurvedAnimation(
+          parent: scaleController,
+          curve: Curves.easeInOut,
+        )),
+      );
+
+      // Reset to default after animation completes
+      scaleController.addStatusListener((status) {
+        if (status == AnimationStatus.completed) {
+          scaleController.reset(); // Reset back to 1.0
+        }
+      });
     }
   }
 
@@ -41,6 +69,9 @@ class _PopupScreenState extends State<PopupScreen> with TickerProviderStateMixin
     for (var controller in _colorControllers) {
       controller.dispose();
     }
+    for (var controller in _scaleControllers) {
+      controller.dispose();
+    }
     _nameController.dispose();
     super.dispose();
   }
@@ -48,7 +79,6 @@ class _PopupScreenState extends State<PopupScreen> with TickerProviderStateMixin
   void toggleSelection(int index) {
     HapticFeedback.mediumImpact();
 
-    // Subtle shake effect
     _controllers[index].repeat(reverse: true);
     Future.delayed(const Duration(milliseconds: 200), () {
       _controllers[index].stop();
@@ -59,6 +89,8 @@ class _PopupScreenState extends State<PopupScreen> with TickerProviderStateMixin
     } else {
       _colorControllers[index].forward();
     }
+
+    _scaleControllers[index].forward(from: 0.0);
 
     setState(() {
       isSelected[index] = !isSelected[index];
@@ -92,7 +124,7 @@ class _PopupScreenState extends State<PopupScreen> with TickerProviderStateMixin
                   ),
                   Column(
                     children: [
-                      Container(
+                      SizedBox(
                         height: 50,
                         child: Stack(
                           children: [
@@ -103,10 +135,7 @@ class _PopupScreenState extends State<PopupScreen> with TickerProviderStateMixin
                                 width: 250,
                                 decoration: const BoxDecoration(
                                   gradient: LinearGradient(
-                                    colors: [
-                                      Color(0xFFD5001C),
-                                      Color(0xFFD5001C)
-                                    ],
+                                    colors: [Color(0xFFD5001C), Color(0xFFD5001C)],
                                   ),
                                 ),
                                 child: const Center(
@@ -147,71 +176,74 @@ class _PopupScreenState extends State<PopupScreen> with TickerProviderStateMixin
                               builder: (context, child) {
                                 return GestureDetector(
                                   onTap: () => toggleSelection(index),
-                                  child: AnimatedContainer(
-                                    duration: const Duration(milliseconds: 700),
-                                    curve: Curves.easeInOut,
-                                    decoration: BoxDecoration(
-                                      border: Border.all(
-                                        color: const Color.fromARGB(255, 104, 104, 104),
-                                        width: 0.5,
-                                      ),
-                                      color: Color.lerp(
-                                        Colors.black,
-                                        const Color(0xFFCC1430),
-                                        _colorControllers[index].value,
-                                      ),
-                                      borderRadius: BorderRadius.circular(5),
-                                    ),
-                                    child: Column(
-                                      mainAxisAlignment: MainAxisAlignment.center,
-                                      children: [
-                                        Text(
-                                          "Option ${index + 1}",
-                                          style: const TextStyle(
-                                            color: Colors.white,
-                                            fontSize: 14,
-                                          ),
+                                  child: ScaleTransition(
+                                    scale: _scaleAnimations[index],
+                                    child: AnimatedContainer(
+                                      duration: const Duration(milliseconds: 700),
+                                      curve: Curves.easeInOut,
+                                      decoration: BoxDecoration(
+                                        border: Border.all(
+                                          color: const Color.fromARGB(255, 104, 104, 104),
+                                          width: 0.5,
                                         ),
-                                        const SizedBox(height: 10),
-                                        AnimatedBuilder(
-                                          animation: _controllers[index],
-                                          builder: (context, child) {
-                                            return Transform.translate(
-                                              offset: Offset(
-                                                sin(_controllers[index].value * 2 * pi) * 2, // Shake with only 2px
-                                                0,
-                                              ),
-                                              child: Container(
-                                                width: 30,
-                                                height: 30,
-                                                decoration: const BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  color: Colors.red, // No blur/shadow effect
+                                        color: Color.lerp(
+                                          Colors.black,
+                                          const Color(0xFFCC1430),
+                                          _colorControllers[index].value,
+                                        ),
+                                        borderRadius: BorderRadius.circular(5),
+                                      ),
+                                      child: Column(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Text(
+                                            "Option ${index + 1}",
+                                            style: const TextStyle(
+                                              color: Colors.white,
+                                              fontSize: 14,
+                                            ),
+                                          ),
+                                          const SizedBox(height: 10),
+                                          AnimatedBuilder(
+                                            animation: _controllers[index],
+                                            builder: (context, child) {
+                                              return Transform.translate(
+                                                offset: Offset(
+                                                  sin(_controllers[index].value * 2 * pi) * 2,
+                                                  0,
                                                 ),
-                                                child: Center(
-                                                  child: AnimatedSwitcher(
-                                                    duration: const Duration(milliseconds: 500),
-                                                    transitionBuilder: (Widget child,
-                                                        Animation<double> animation) {
-                                                      return ScaleTransition(
-                                                          scale: animation, child: child);
-                                                    },
-                                                    child: Text(
-                                                      isSelected[index] ? '−' : '+',
-                                                      key: ValueKey<bool>(isSelected[index]),
-                                                      style: const TextStyle(
-                                                        color: Colors.white,
-                                                        fontSize: 20,
-                                                        fontWeight: FontWeight.bold,
+                                                child: Container(
+                                                  width: 30,
+                                                  height: 30,
+                                                  decoration: const BoxDecoration(
+                                                    shape: BoxShape.circle,
+                                                    color: Colors.red,
+                                                  ),
+                                                  child: Center(
+                                                    child: AnimatedSwitcher(
+                                                      duration: const Duration(milliseconds: 500),
+                                                      transitionBuilder: (Widget child,
+                                                          Animation<double> animation) {
+                                                        return ScaleTransition(
+                                                            scale: animation, child: child);
+                                                      },
+                                                      child: Text(
+                                                        isSelected[index] ? '−' : '+',
+                                                        key: ValueKey<bool>(isSelected[index]),
+                                                        style: const TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 20,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                            );
-                                          },
-                                        ),
-                                      ],
+                                              );
+                                            },
+                                          ),
+                                        ],
+                                      ),
                                     ),
                                   ),
                                 );

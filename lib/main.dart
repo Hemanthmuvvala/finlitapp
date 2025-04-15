@@ -1,4 +1,5 @@
-import 'package:finlitapp/menuscreen.dart';
+import 'package:finlitapp/navigations/app_routes.dart';
+import 'package:finlitapp/navigations/task2.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -14,7 +15,9 @@ class ChatApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData.light(useMaterial3: true,),
      
-      home: const PopupScreen(),
+      home:  MessagesScreen(),
+      initialRoute:'/',
+      onGenerateRoute:onGenerate,
     );
     
   }
